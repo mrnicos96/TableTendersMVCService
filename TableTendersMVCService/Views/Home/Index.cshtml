@@ -1,0 +1,50 @@
+﻿@model IEnumerable<TableTendersMVCService.Models.Tender>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+
+    @if (User.Identity.IsAuthenticated)
+    {
+
+        <p>@User.Identity.Name</p>
+
+        <h3>Тендеры</h3>
+        <p>
+            <table>
+                <tr>
+                    <td>Название тендера</td>
+                    <td>Дата начала</td>
+                    <td>Дата окончания</td>
+                    <td>URL тендерной площадки</td>
+                </tr>
+                @foreach (var tender in Model)
+                {
+                    <tr>
+                        <td>@tender.Name</td>
+                        <td>@tender.StartDate</td>
+                        <td>@tender.ExpirationDate</td>
+                        <td>@tender.TenderSiteURL</td>
+                    </tr>
+                }
+            </table>
+        </p>
+
+
+        <form method="post" asp-controller="Account" asp-action="Logout">
+            <input type="submit" value="Выход" />
+        </form>
+    }
+    else
+    {
+        <h2>
+            <a asp-controller="Account" asp-action="Login">Вход</a>
+            <a asp-controller="Account" asp-action="Register">Регистрация</a>
+        </h2>
+    }
+
+
+</div>
