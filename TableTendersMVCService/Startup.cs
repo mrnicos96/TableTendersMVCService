@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
+using System;
 
 
 namespace TableTendersMVCService
@@ -26,9 +28,6 @@ namespace TableTendersMVCService
             services.AddDbContext<ApplicationContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            string connection = Configuration.GetConnectionString("TenderStoredbConnection");
-            services.AddDbContext<TenderContext>(options => options.UseSqlServer(connection));
-
             services.AddIdentity<User, IdentityRole>(opts => {
                 opts.Password.RequiredLength = 5;   // минимальная длина
                 opts.Password.RequireNonAlphanumeric = false;   // требуются ли не алфавитно-цифровые символы
@@ -37,6 +36,16 @@ namespace TableTendersMVCService
                 opts.Password.RequireDigit = false; // требуются ли цифры
             })
             .AddEntityFrameworkStores<ApplicationContext>();
+
+            services.AddHttpClient(name: "TableTendersAPIService",
+                configureClient: options =>
+                {
+                    options.BaseAddress = new Uri("https://localhost:44331");
+
+                    options.DefaultRequestHeaders.Accept.Add(
+                        new MediaTypeWithQualityHeaderValue(
+                            "aplication/json", 1.0));
+                });
 
             services.AddControllersWithViews();
         }

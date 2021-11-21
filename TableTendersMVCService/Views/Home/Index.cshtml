@@ -1,6 +1,4 @@
-﻿@model IEnumerable<TableTendersMVCService.Models.Tender>
-
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
 
@@ -12,25 +10,10 @@
 
         <p>@User.Identity.Name</p>
 
-        <h3>Тендеры</h3>
         <p>
-            <table>
-                <tr>
-                    <td>Название тендера</td>
-                    <td>Дата начала</td>
-                    <td>Дата окончания</td>
-                    <td>URL тендерной площадки</td>
-                </tr>
-                @foreach (var tender in Model)
-                {
-                    <tr>
-                        <td>@tender.Name</td>
-                        <td>@tender.StartDate</td>
-                        <td>@tender.ExpirationDate</td>
-                        <td>@tender.TenderSiteURL</td>
-                    </tr>
-                }
-            </table>
+            <form asp-action="GetTender" method="get">
+                <input type="submit" value="Запрос данных" />
+            </form>
         </p>
 
 
